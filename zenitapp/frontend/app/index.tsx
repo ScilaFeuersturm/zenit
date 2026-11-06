@@ -3,6 +3,7 @@ import { ActivityIndicator, View } from "react-native";
 import { Redirect } from "expo-router";
 import { useAuth } from "@/context/AuthContext";
 import { colors } from "@/constants/theme";
+import { Welcome } from "@/components/Welcome";
 
 export default function Index() {
   const { user, isLoading } = useAuth();
@@ -15,7 +16,7 @@ export default function Index() {
     );
   }
 
-  if (!user) return <Redirect href="/(auth)/login" />;
+  if (!user) return <Welcome />;
 
   if (user.role === "cliente") return <Redirect href="/(client)/home" />;
 

@@ -19,7 +19,7 @@ La API usa el plan Free y puede demorar en responder después de un período sin
 
 PostgreSQL Free vence a los 30 días: antes del vencimiento, exportá los datos o elegí un plan de pago. Esta configuración sirve para una prueba; revisá el plan y los límites antes de usarla con datos reales.
 
-La landing conserva las imágenes y textos de referencia que ya tenía el proyecto.
+La página institucional presenta Zenit, sus experiencias y el contacto, con enlaces al Instagram público. La entrada web de la app sin sesión abre esa página; el login sigue disponible en `/login`. Android muestra una bienvenida institucional antes de ingresar.
 
 ## Desarrollo local
 

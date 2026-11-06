@@ -123,72 +123,21 @@ constants/theme.ts  Paleta, spacing, tipografía
   y colocarlo en `frontend/assets/` (`icon.png`, y opcionalmente
   `adaptiveIcon.foregroundImage` para Android) antes de armar un build nativo.
 
-## 3. Landing page (marketing público)
+## 3. Página institucional
 
-Sitio estático (sin build step) en `landing/`, pensado para servirse como página
-principal del dominio de Zenit — la app (Expo) queda en un subdominio aparte
-(p. ej. `app.eventoszenit.com`).
-
-### Arrancar en local
+Sitio público en `landing/`: presenta la identidad de Zenit, sus experiencias, el proceso de consulta y su Instagram. Los contenidos reemplazan las cifras, testimonios y textos de ejemplo de la primera versión.
 
 ```bash
 cd landing
-python -m http.server 5501   # o: npx serve . -l 5501
+APP_URL=https://tu-app API_URL=https://tu-api node build.cjs
+python -m http.server 5501 --directory dist
 ```
 
-Abrir `http://localhost:5501`. Necesita el backend corriendo en `http://localhost:8000`
-para que funcione el formulario de contacto (agregar el puerto que uses a
-`CORS_ORIGINS` en `backend/.env`, igual que ya se hizo para `5501`).
+En Render, las URLs se obtienen del Blueprint. El formulario envía a `POST /api/contact` sin exigir registro. La API guarda el mensaje y una notificación para cada administrador. El panel de resumen muestra las notificaciones y recibe actualizaciones por WebSocket; no hay push con la app cerrada ni pantalla de contacto completo todavía.
 
-### Estructura
+La entrada de la app web sin sesión abre la página institucional. El botón Ingresar lleva directamente a `/login`; Android muestra una bienvenida antes de iniciar sesión. `EXPO_PUBLIC_SITE_URL` permite cambiar la URL institucional y `EXPO_PUBLIC_API_URL` la API usada por Expo. El ícono Z está en `frontend/assets/icon.png`.
 
-```
-landing/
-├── index.html    Header, hero, servicios, quiénes somos, galería,
-│                  testimonios, banda de CTA, contacto, footer
-├── css/styles.css
-└── js/main.js     Menú mobile, scroll-reveal, lightbox de galería,
-                    envío del formulario de contacto, links de login/registro
-```
-
-### Decisiones de diseño
-
-- **Login / registro no se reimplementan acá**: los botones del header y del
-  footer apuntan directo a la app ya existente (`js/main.js → CONFIG.APP_URL`),
-  reusando el flujo de auth ya probado — incluye que el admin **no se registra**
-  desde la web, solo inicia sesión con las credenciales que ya tiene. Antes de
-  desplegar a producción, cambiar `CONFIG.APP_URL` / `CONFIG.API_URL` en
-  `js/main.js` por los dominios reales.
-- **Formulario de contacto real**: pega contra `POST /api/contact` (nuevo
-  endpoint en el backend), que guarda el mensaje y dispara una notificación
-  in-app a los admins conectados (mismo sistema de WebSocket que el chat).
-  Los mensajes recibidos se pueden listar con `GET /api/contact` (requiere
-  rol admin) — todavía no tiene pantalla propia en la app, es la próxima
-  pieza natural a agregar en el panel de admin.
-- **Imágenes de la galería/hero son placeholders** (LoremFlickr, con fallback
-  automático a Picsum si LoremFlickr falla — es un servicio gratuito algo
-  inestable) y los avatares de testimonios son de `pravatar.cc`. Todo el
-  contenido de texto es lorem ipsum. Reemplazar por fotografía real de eventos
-  de Zenit y testimonios reales antes de publicar.
-- **Paleta**: mantiene la base negro + dorado del logo (elegancia) y suma un
-  degradé "luces de fiesta" (magenta → violeta → turquesa) usado en dosis
-  puntuales — título del hero, brillo de fondo, borde superior de las tarjetas
-  de testimonios, hover de los links — para sumar la parte de diversión/fiesta
-  sin perder la identidad del logo.
-
-### Despliegue en el VPS de Hostinger
-
-Al ser HTML/CSS/JS estático, alcanza con que Nginx sirva la carpeta `landing/`
-como raíz del dominio principal:
-
-```nginx
-server {
-    listen 80;
-    server_name eventoszenit.com www.eventoszenit.com;
-    root /var/www/zenit/landing;
-    index index.html;
-}
-```
+Para desplegar, consultá [`../RENDER.md`](../RENDER.md).
 
 ## 4. Próximos pasos sugeridos
 

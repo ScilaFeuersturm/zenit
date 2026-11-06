@@ -1,162 +1,64 @@
-// ============================================================
-// Config: URLs de la app real (Expo) y de la API (FastAPI).
-// Cambiar acá cuando se despliegue a producción, por ejemplo:
-//   APP_URL: "https://app.eventoszenit.com"
-//   API_URL: "https://api.eventoszenit.com"
-// El login/registro NO se reimplementa en la landing: se reusa
-// el flujo ya existente y probado de la app (incluye la lógica
-// de "el admin no se registra, ya tiene credenciales").
-// ============================================================
 const CONFIG = {
   APP_URL: window.ZENIT_CONFIG?.APP_URL || "http://localhost:19006",
   API_URL: window.ZENIT_CONFIG?.API_URL || "http://localhost:8000",
 };
-
 document.getElementById("year").textContent = new Date().getFullYear();
-
-// ---------- Links de login / registro ----------
-const loginTargets = ["loginLink", "loginLinkMobile", "footerLogin"];
-const registerTargets = [
-  "registerLink",
-  "registerLinkMobile",
-  "footerRegister",
-  "ctaPrimary",
-  "ctaSecondary",
-];
-
-loginTargets.forEach((id) => {
-  const el = document.getElementById(id);
-  if (el) el.href = `${CONFIG.APP_URL}/login`;
+document.querySelectorAll("[data-app-path]").forEach((link) => {
+  link.href = `${CONFIG.APP_URL.replace(/\/$/, "")}/${link.dataset.appPath}`;
 });
-
-registerTargets.forEach((id) => {
-  const el = document.getElementById(id);
-  if (el) el.href = `${CONFIG.APP_URL}/register`;
-});
-
-// ---------- Header: fondo sólido al scrollear ----------
-const header = document.getElementById("siteHeader");
-function onScroll() {
-  header.classList.toggle("scrolled", window.scrollY > 20);
+const menuButton = document.querySelector(".menu-toggle");
+const navigation = document.getElementById("mainNav");
+function closeMenu() {
+  navigation.classList.remove("open");
+  menuButton.setAttribute("aria-expanded", "false");
+  menuButton.setAttribute("aria-label", "Abrir menú");
 }
-onScroll();
-window.addEventListener("scroll", onScroll, { passive: true });
-
-// ---------- Menú mobile ----------
-const navToggle = document.getElementById("navToggle");
-const mobilePanel = document.getElementById("mobilePanel");
-
-navToggle.addEventListener("click", () => {
-  const isOpen = mobilePanel.classList.toggle("open");
-  navToggle.textContent = isOpen ? "✕" : "☰";
+menuButton.addEventListener("click", () => {
+  const open = navigation.classList.toggle("open");
+  menuButton.setAttribute("aria-expanded", String(open));
+  menuButton.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
 });
-
-mobilePanel.querySelectorAll("a").forEach((link) => {
-  link.addEventListener("click", () => {
-    mobilePanel.classList.remove("open");
-    navToggle.textContent = "☰";
-  });
-});
-
-// ---------- Reveal on scroll ----------
-const revealEls = document.querySelectorAll(".reveal");
-const revealObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("in-view");
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  },
-  { threshold: 0.15 }
-);
-revealEls.forEach((el) => revealObserver.observe(el));
-
-// ---------- Lightbox de galería ----------
-const lightbox = document.getElementById("lightbox");
-const lightboxImg = document.getElementById("lightboxImg");
-const lightboxClose = document.getElementById("lightboxClose");
-
-document.querySelectorAll(".lightbox-trigger").forEach((trigger) => {
-  trigger.addEventListener("click", (event) => {
-    event.preventDefault();
-    const fallback = trigger.dataset.fallback;
-    lightboxImg.onerror = fallback
-      ? () => {
-          lightboxImg.onerror = null;
-          lightboxImg.src = fallback;
-        }
-      : null;
-    lightboxImg.src = trigger.getAttribute("href");
-    lightboxImg.alt = trigger.querySelector("img")?.alt ?? "Vista ampliada";
-    lightbox.classList.add("open");
-  });
-});
-
-function closeLightbox() {
-  lightbox.classList.remove("open");
-  lightboxImg.src = "";
-}
-
-lightboxClose.addEventListener("click", closeLightbox);
-lightbox.addEventListener("click", (event) => {
-  if (event.target === lightbox) closeLightbox();
-});
+navigation.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeMenu));
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") closeLightbox();
+  if (event.key === "Escape" && navigation.classList.contains("open")) {
+    closeMenu(); menuButton.focus();
+  }
 });
-
-// ---------- Formulario de contacto ----------
-const contactForm = document.getElementById("contactForm");
-const contactFeedback = document.getElementById("contactFeedback");
-const contactSubmit = document.getElementById("contactSubmit");
-
-contactForm.addEventListener("submit", async (event) => {
+const form = document.getElementById("contactForm");
+const submit = document.getElementById("contactSubmit");
+const feedback = document.getElementById("contactFeedback");
+let sending = false;
+form.addEventListener("submit", async (event) => {
   event.preventDefault();
-
-  const formData = new FormData(contactForm);
+  if (sending || !form.reportValidity()) return;
+  const data = new FormData(form);
   const payload = {
-    name: formData.get("name")?.toString().trim(),
-    email: formData.get("email")?.toString().trim(),
-    phone: formData.get("phone")?.toString().trim() || undefined,
-    message: formData.get("message")?.toString().trim(),
+    name: String(data.get("name")).trim(), email: String(data.get("email")).trim(),
+    phone: String(data.get("phone")).trim() || null, message: String(data.get("message")).trim(),
   };
-
-  if (!payload.name || !payload.email || !payload.message) {
-    showFeedback("Completá nombre, email y mensaje.", "error");
-    return;
+  if (!payload.name || payload.message.length < 10) {
+    feedback.textContent = "Completá tu nombre y contanos un poco más sobre tu evento.";
+    feedback.className = "form-feedback error"; return;
   }
-
-  contactSubmit.disabled = true;
-  contactSubmit.textContent = "Enviando...";
-
+  sending = true; submit.disabled = true; submit.textContent = "Enviando tu consulta…";
+  feedback.className = "form-feedback"; feedback.textContent = "Estamos enviando tu consulta al equipo de Zenit…";
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 90000);
   try {
-    const res = await fetch(`${CONFIG.API_URL}/api/contact`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+    const response = await fetch(`${CONFIG.API_URL.replace(/\/$/, "")}/api/contact`, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload), signal: controller.signal,
     });
-
-    if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
-      throw new Error(body.detail ?? "No se pudo enviar el mensaje");
-    }
-
-    contactForm.reset();
-    showFeedback("¡Gracias! Te vamos a responder a la brevedad por email.", "success");
-  } catch (err) {
-    showFeedback(
-      err instanceof Error ? err.message : "No se pudo enviar el mensaje. Probá de nuevo.",
-      "error"
-    );
+    if (!response.ok) throw new Error("No se pudo enviar la consulta");
+    feedback.className = "form-feedback success";
+    feedback.textContent = "¡Gracias! Tu consulta llegó al equipo de Zenit. Nos pondremos en contacto con vos.";
+    form.reset();
+  } catch {
+    feedback.className = "form-feedback error";
+    feedback.textContent = "No pudimos confirmar el envío. Tus datos siguen acá: podés reintentar o escribirnos por Instagram.";
   } finally {
-    contactSubmit.disabled = false;
-    contactSubmit.textContent = "Enviar mensaje";
+    clearTimeout(timeout); sending = false; submit.disabled = false;
+    submit.replaceChildren(document.createTextNode("Enviar mi consulta "));
+    const arrow = document.createElement("span"); arrow.setAttribute("aria-hidden", "true"); arrow.textContent = "↗"; submit.append(arrow);
   }
 });
-
-function showFeedback(text, kind) {
-  contactFeedback.textContent = text;
-  contactFeedback.className = `form-feedback show ${kind}`;
-}

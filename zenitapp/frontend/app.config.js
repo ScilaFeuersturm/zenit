@@ -6,6 +6,7 @@ module.exports = ({ config }) => {
     extra: {
       ...config.extra,
       apiUrl,
+      siteUrl: process.env.EXPO_PUBLIC_SITE_URL || config.extra.siteUrl,
       wsUrl: apiUrl.replace(/^http/, "ws"),
     },
   };
