@@ -19,7 +19,8 @@
     "android": {
       "package": "com.eventoszenit.app",
       "adaptiveIcon": {
-        "backgroundColor": "#0A0A0A"
+        "backgroundColor": "#0A0A0A",
+        "foregroundImage": "./assets/icon.png"
       }
     },
     "plugins": [
@@ -29,6 +30,10 @@
     "extra": {
       "apiUrl": "http://localhost:8000",
       "wsUrl": "ws://localhost:8000"
+    },
+    "icon": "./assets/icon.png",
+    "web": {
+      "favicon": "./assets/icon.png"
     }
   }
 }
