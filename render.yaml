@@ -17,9 +17,9 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: FIRST_ADMIN_EMAIL
-        value: admin@eventoszenit.com
+        sync: false
       - key: FIRST_ADMIN_PASSWORD
-        generateValue: true
+        sync: false
   - type: web
     name: zenit-app
     runtime: static

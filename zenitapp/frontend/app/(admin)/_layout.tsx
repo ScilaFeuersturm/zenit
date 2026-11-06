@@ -56,6 +56,14 @@ export default function AdminLayout() {
         }}
       />
       <Tabs.Screen name="chat/[conversationId]" options={{ href: null }} />
+      <Tabs.Screen
+        name="users"
+        options={{
+          title: "Equipo",
+          href: user.role === "admin" ? undefined : null,
+          tabBarIcon: ({ color, size }) => <Ionicons name="people" color={color} size={size} />,
+        }}
+      />
       <Tabs.Screen name="event/[id]" options={{ href: null }} />
     </Tabs>
   );

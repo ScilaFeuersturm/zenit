@@ -7,11 +7,11 @@
 - `zenit-api`: FastAPI en Docker, un worker para conservar el funcionamiento del chat.
 - `zenit-db`: PostgreSQL accesible solo por la red privada.
 
-Las URLs públicas se enlazan mediante variables de Render. No se incluyen secretos en Git. Render genera `SECRET_KEY` y `FIRST_ADMIN_PASSWORD`.
+Las URLs públicas se enlazan mediante variables de Render. No se incluyen secretos en Git. Render genera `SECRET_KEY`. Las credenciales iniciales se configuran como variables secretas de Render.
 
 ## Primer acceso
 
-El administrador inicial usa `admin@eventoszenit.com`. Consultá `FIRST_ADMIN_PASSWORD` en **zenit-api → Environment** dentro del Dashboard. No publiques esa contraseña. Si cambiás las variables `FIRST_ADMIN_*` después del primer arranque, el usuario existente no se modifica automáticamente.
+La cuenta inicial se define con `FIRST_ADMIN_EMAIL` y `FIRST_ADMIN_PASSWORD` en **zenit-api → Environment** dentro del Dashboard. No publiques esa contraseña. El arranque crea esa cuenta si no existe, incluso si ya hay otros administradores. Si cambiás las variables `FIRST_ADMIN_*` después del primer arranque, el usuario existente no se modifica automáticamente. Desde **Equipo**, un administrador puede crear más administradores o empleados. La API exige rol administrador para listar o crear esas cuentas.
 
 ## Plan gratuito
 

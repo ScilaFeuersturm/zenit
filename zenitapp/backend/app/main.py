@@ -13,7 +13,9 @@ from app.models.user import User, UserRole
 def _ensure_first_admin() -> None:
     db = SessionLocal()
     try:
-        if not db.query(User).filter(User.role == UserRole.ADMIN).first():
+        # Garantiza la cuenta configurada aun si ya existe otro administrador.
+        # No modifica contraseñas ni roles de cuentas existentes en cada reinicio.
+        if not db.query(User).filter(User.email == settings.FIRST_ADMIN_EMAIL).first():
             admin = User(
                 email=settings.FIRST_ADMIN_EMAIL,
                 full_name=settings.FIRST_ADMIN_NAME,
