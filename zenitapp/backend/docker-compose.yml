@@ -1,0 +1,24 @@
+services:
+  api:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./zenit.db:/app/zenit.db   # solo aplica si usás SQLite; quitar si usás Postgres
+
+  # Opcional: descomentar si preferís Postgres en vez de SQLite en el VPS.
+  # db:
+  #   image: postgres:16-alpine
+  #   restart: unless-stopped
+  #   environment:
+  #     POSTGRES_DB: zenit_eventos
+  #     POSTGRES_USER: zenit
+  #     POSTGRES_PASSWORD: cambiar123
+  #   volumes:
+  #     - pgdata:/var/lib/postgresql/data
+
+# volumes:
+#   pgdata:

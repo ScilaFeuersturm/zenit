@@ -1,0 +1,34 @@
+{
+  "expo": {
+    "name": "Eventos Zenit",
+    "slug": "eventos-zenit",
+    "scheme": "eventoszenit",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "backgroundColor": "#0A0A0A"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.eventoszenit.app"
+    },
+    "android": {
+      "package": "com.eventoszenit.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#0A0A0A"
+      }
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font"
+    ],
+    "extra": {
+      "apiUrl": "http://localhost:8000",
+      "wsUrl": "ws://localhost:8000"
+    }
+  }
+}

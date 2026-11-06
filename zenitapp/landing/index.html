@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eventos Zenit — Organización de eventos premium</title>
+  <meta
+    name="description"
+    content="Eventos Zenit organiza bodas, cumpleaños y eventos corporativos de punta a punta: catering, sonido, iluminación, decoración y personal en un solo lugar."
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- ===================== HEADER ===================== -->
+  <header class="site-header" id="siteHeader">
+    <div class="container">
+      <a href="#top" class="brand">
+        <span class="spark">✨</span>
+        <span class="wordmark">EVENTOS <span>ZENIT</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#quienes-somos">Quiénes somos</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#galeria">Galería</a>
+        <a href="#testimonios">Opiniones</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+
+      <div class="header-actions">
+        <a class="btn btn-outline" href="#" id="loginLink">Iniciar sesión</a>
+        <a class="btn btn-primary" href="#" id="registerLink">Pedí tu presupuesto</a>
+      </div>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">☰</button>
+    </div>
+  </header>
+
+  <div class="mobile-panel" id="mobilePanel">
+    <a href="#quienes-somos">Quiénes somos</a>
+    <a href="#servicios">Servicios</a>
+    <a href="#galeria">Galería</a>
+    <a href="#testimonios">Opiniones</a>
+    <a href="#contacto">Contacto</a>
+    <div class="header-actions">
+      <a class="btn btn-outline btn-block" href="#" id="loginLinkMobile">Iniciar sesión</a>
+      <a class="btn btn-primary btn-block" href="#" id="registerLinkMobile">Pedí tu presupuesto</a>
+    </div>
+  </div>
+
+  <main id="top">
+
+    <!-- ===================== HERO ===================== -->
+    <section class="hero">
+      <div class="hero-glow"></div>
+      <div class="container">
+        <div class="hero-copy">
+          <span class="eyebrow">✨ Eventos que se sienten, no solo se ven</span>
+          <h1>Convertimos tu evento en <em>un momento inolvidable</em></h1>
+          <p>
+            Catering, sonido, iluminación, decoración y personal, coordinados de punta a
+            punta por un solo equipo. Vos disfrutá la fiesta — nosotros nos encargamos
+            de que todo funcione.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#" id="ctaPrimary">Pedí tu presupuesto gratis</a>
+            <a class="btn btn-outline" href="#quienes-somos">Conocé cómo trabajamos</a>
+          </div>
+          <div class="hero-stats">
+            <div><strong>+150</strong><span>Eventos realizados</span></div>
+            <div><strong>+5 años</strong><span>De experiencia</span></div>
+            <div><strong>98%</strong><span>Clientes que nos recomiendan</span></div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <img
+            src="https://loremflickr.com/900/1100/party,celebration?lock=21"
+            alt="Celebración organizada por Eventos Zenit"
+            loading="eager"
+            onerror="this.onerror=null;this.src='https://picsum.photos/seed/zenit21/900/1100'"
+          />
+          <div class="hero-badge">
+            <span class="dot"></span>
+            <div>
+              <strong>Presupuesto en minutos</strong>
+              <span>Elegís servicios, te confirmamos por chat en vivo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SERVICIOS ===================== -->
+    <section class="section" id="servicios">
+      <div class="container">
+        <div class="section-head centered reveal">
+          <span class="eyebrow">Lo que hacemos</span>
+          <h2>Todo tu evento, en un solo lugar</h2>
+          <p>Armamos el combo de servicios que tu evento necesita — o lo hacemos a medida.</p>
+        </div>
+
+        <div class="services-grid">
+          <div class="service-card reveal">
+            <div class="service-icon" style="background: rgba(255,61,138,.14); color:#ff3d8a;">🍽️</div>
+            <h3>Catering</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, menú a medida.</p>
+          </div>
+          <div class="service-card reveal">
+            <div class="service-icon" style="background: rgba(139,92,246,.14); color:#8b5cf6;">🎧</div>
+            <h3>Sonido</h3>
+            <p>Lorem ipsum dolor sit amet, equipos profesionales y DJ en vivo.</p>
+          </div>
+          <div class="service-card reveal">
+            <div class="service-icon" style="background: rgba(34,211,238,.14); color:#22d3ee;">💡</div>
+            <h3>Iluminación</h3>
+            <p>Lorem ipsum dolor sit amet, ambientación lumínica para cada momento.</p>
+          </div>
+          <div class="service-card reveal">
+            <div class="service-icon" style="background: rgba(242,183,92,.16); color:#f2b75c;">🎈</div>
+            <h3>Decoración</h3>
+            <p>Lorem ipsum dolor sit amet, escenografía y ambientación temática.</p>
+          </div>
+          <div class="service-card reveal">
+            <div class="service-icon" style="background: rgba(63,207,142,.16); color:#3fcf8e;">🧑‍💼</div>
+            <h3>Personal</h3>
+            <p>Lorem ipsum dolor sit amet, mozos, seguridad y coordinación en el lugar.</p>
+          </div>
+          <div class="service-card reveal">
+            <div class="service-icon" style="background: rgba(255,255,255,.1); color:#fff;">🎉</div>
+            <h3>Producción integral</h3>
+            <p>Lorem ipsum dolor sit amet, coordinamos todo el evento de punta a punta.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== QUIÉNES SOMOS ===================== -->
+    <section class="section section-alt" id="quienes-somos">
+      <div class="container">
+        <div class="about-grid">
+          <div class="about-media reveal">
+            <img
+              src="https://loremflickr.com/800/1000/wedding,event?lock=7"
+              alt="Equipo de Eventos Zenit trabajando en un evento"
+              onerror="this.onerror=null;this.src='https://picsum.photos/seed/zenit7/800/1000'"
+            />
+          </div>
+          <div class="about-copy reveal">
+            <span class="eyebrow">Quiénes somos</span>
+            <h2>Un equipo obsesionado con los detalles</h2>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+              tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+              veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.
+            </p>
+            <p>
+              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+              dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+              proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+            <div class="about-values">
+              <div>
+                <strong>Cercanía</strong>
+                <span>Lorem ipsum dolor sit amet consectetur.</span>
+              </div>
+              <div>
+                <strong>Calidad</strong>
+                <span>Lorem ipsum dolor sit amet consectetur.</span>
+              </div>
+              <div>
+                <strong>Compromiso</strong>
+                <span>Lorem ipsum dolor sit amet consectetur.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== GALERÍA ===================== -->
+    <section class="section" id="galeria">
+      <div class="container">
+        <div class="section-head centered reveal">
+          <span class="eyebrow">Galería</span>
+          <h2>Momentos que ayudamos a crear</h2>
+          <p>Una probadita de los eventos que armamos junto a nuestros clientes.</p>
+        </div>
+
+        <div class="gallery-grid reveal">
+          <a href="https://loremflickr.com/1200/1200/wedding,party?lock=1" data-fallback="https://picsum.photos/seed/zenit1/1200/1200" class="lightbox-trigger">
+            <img src="https://loremflickr.com/600/600/wedding,party?lock=1" alt="Boda organizada por Eventos Zenit" loading="lazy" onerror="this.onerror=null;this.src='https://picsum.photos/seed/zenit1/600/600'" />
+            <span>Boda · Jardín privado</span>
+          </a>
+          <a href="https://loremflickr.com/1200/760/dj,concert?lock=2" data-fallback="https://picsum.photos/seed/zenit2/1200/760" class="lightbox-trigger">
+            <img src="https://loremflickr.com/600/380/dj,concert?lock=2" alt="DJ en vivo en evento de Eventos Zenit" loading="lazy" onerror="this.onerror=null;this.src='https://picsum.photos/seed/zenit2/600/380'" />
+            <span>Fiesta electrónica</span>
+          </a>
+          <a href="https://loremflickr.com/1200/760/decoration,event?lock=3" data-fallback="https://picsum.photos/seed/zenit3/1200/760" class="lightbox-trigger">
+            <img src="https://loremflickr.com/600/380/decoration,event?lock=3" alt="Decoración temática de evento" loading="lazy" onerror="this.onerror=null;this.src='https://picsum.photos/seed/zenit3/600/380'" />
+            <span>Cumpleaños temático</span>
+          </a>
+          <a href="https://loremflickr.com/1200/1560/lights,party?lock=4" data-fallback="https://picsum.photos/seed/zenit4/1200/1560" class="lightbox-trigger">
+            <img src="https://loremflickr.com/600/780/lights,party?lock=4" alt="Iluminación de evento nocturno" loading="lazy" onerror="this.onerror=null;this.src='https://picsum.photos/seed/zenit4/600/780'" />
+            <span>Gala corporativa</span>
+          </a>
+          <a href="https://loremflickr.com/1200/760/catering,food?lock=5" data-fallback="https://picsum.photos/seed/zenit5/1200/760" class="lightbox-trigger">
+            <img src="https://loremflickr.com/600/380/catering,food?lock=5" alt="Catering de evento" loading="lazy" onerror="this.onerror=null;this.src='https://picsum.photos/seed/zenit5/600/380'" />
+            <span>Catering premium</span>
+          </a>
+          <a href="https://loremflickr.com/2000/760/celebration,fireworks?lock=6" data-fallback="https://picsum.photos/seed/zenit6/2000/760" class="lightbox-trigger">
+            <img src="https://loremflickr.com/1220/380/celebration,fireworks?lock=6" alt="Cierre de evento con fuegos artificiales" loading="lazy" onerror="this.onerror=null;this.src='https://picsum.photos/seed/zenit6/1220/380'" />
+            <span>Cierre de año</span>
+          </a>
+        </div>
+        <p class="gallery-note">
+          * Imágenes de referencia (placeholder) — se reemplazan por fotografía propia de eventos de Zenit.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== TESTIMONIOS ===================== -->
+    <section class="section section-alt" id="testimonios">
+      <div class="container">
+        <div class="section-head centered reveal">
+          <span class="eyebrow">Opiniones</span>
+          <h2>Lo que dicen quienes ya vivieron un evento Zenit</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+
+        <div class="testimonials-track">
+          <div class="testimonial-card reveal">
+            <div class="stars">★★★★★</div>
+            <p class="quote">
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+              tempor incididunt ut labore et dolore magna aliqua."
+            </p>
+            <div class="testimonial-person">
+              <img src="https://i.pravatar.cc/100?img=32" alt="Foto de Martina G." />
+              <div>
+                <strong>Martina G.</strong>
+                <span>Casamiento · Marzo 2026</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-card reveal">
+            <div class="stars">★★★★★</div>
+            <p class="quote">
+              "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
+              ut aliquip ex ea commodo consequat, duis aute irure dolor."
+            </p>
+            <div class="testimonial-person">
+              <img src="https://i.pravatar.cc/100?img=51" alt="Foto de Lucas F." />
+              <div>
+                <strong>Lucas F.</strong>
+                <span>Evento corporativo · Junio 2026</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-card reveal">
+            <div class="stars">★★★★★</div>
+            <p class="quote">
+              "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+              officia deserunt mollit anim id est laborum, ¡todo perfecto!"
+            </p>
+            <div class="testimonial-person">
+              <img src="https://i.pravatar.cc/100?img=47" alt="Foto de Daniela R." />
+              <div>
+                <strong>Daniela R.</strong>
+                <span>Cumpleaños de 15 · Agosto 2026</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CTA ===================== -->
+    <section class="section">
+      <div class="container">
+        <div class="cta-band reveal">
+          <span class="eyebrow">¿Listo para tu próximo evento?</span>
+          <h2>Armemos juntos algo inolvidable</h2>
+          <p>Contanos qué estás imaginando y te devolvemos un presupuesto a medida.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#" id="ctaSecondary">Pedí tu presupuesto</a>
+            <a class="btn btn-outline" href="#contacto">Hablar por el formulario</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CONTACTO ===================== -->
+    <section class="section" id="contacto">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Contacto</span>
+          <h2>Contanos sobre tu evento</h2>
+          <p>Respondemos en menos de 24hs — o escribinos directo por Instagram.</p>
+        </div>
+
+        <div class="contact-grid">
+          <div class="contact-info reveal">
+            <div class="contact-item">
+              <div class="icon">✉️</div>
+              <div>
+                <strong>Email</strong>
+                <a href="mailto:hola@eventoszenit.com">hola@eventoszenit.com</a>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="icon">📞</div>
+              <div>
+                <strong>Teléfono / WhatsApp</strong>
+                <span>+54 9 11 0000-0000</span>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="icon">📍</div>
+              <div>
+                <strong>Zona de cobertura</strong>
+                <span>Buenos Aires y alrededores</span>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="icon">📷</div>
+              <div>
+                <strong>Instagram</strong>
+                <a href="https://www.instagram.com/eventos.zenit/" target="_blank" rel="noopener">@eventos.zenit</a>
+              </div>
+            </div>
+
+            <div class="social-row">
+              <a href="https://www.instagram.com/eventos.zenit/" target="_blank" rel="noopener" aria-label="Instagram">📷</a>
+              <a href="mailto:hola@eventoszenit.com" aria-label="Email">✉️</a>
+              <a href="#" aria-label="WhatsApp">💬</a>
+            </div>
+          </div>
+
+          <form class="contact-form reveal" id="contactForm" novalidate>
+            <div class="form-row">
+              <div class="field">
+                <label for="name">Nombre y apellido</label>
+                <input type="text" id="name" name="name" required placeholder="Tu nombre" />
+              </div>
+              <div class="field">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required placeholder="vos@ejemplo.com" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="phone">Teléfono (opcional)</label>
+              <input type="tel" id="phone" name="phone" placeholder="+54 9 11 ..." />
+            </div>
+            <div class="field">
+              <label for="message">Contanos sobre tu evento</label>
+              <textarea id="message" name="message" rows="4" required placeholder="Fecha aproximada, tipo de evento, cantidad de invitados..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block" id="contactSubmit">Enviar mensaje</button>
+            <p class="form-feedback" id="contactFeedback"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#top" class="brand">
+            <span class="spark">✨</span>
+            <span class="wordmark">EVENTOS <span>ZENIT</span></span>
+          </a>
+          <p>
+            Organizamos tu momento, en vivo y sin vueltas. Catering, sonido, iluminación,
+            decoración y personal en un solo equipo.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navegación</h4>
+          <ul>
+            <li><a href="#quienes-somos">Quiénes somos</a></li>
+            <li><a href="#servicios">Servicios</a></li>
+            <li><a href="#galeria">Galería</a></li>
+            <li><a href="#testimonios">Opiniones</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Cuenta</h4>
+          <ul>
+            <li><a href="#" id="footerLogin">Iniciar sesión</a></li>
+            <li><a href="#" id="footerRegister">Registrarme como cliente</a></li>
+            <li><span>¿Sos parte del equipo Zenit? Ingresá con tus credenciales.</span></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Contacto</h4>
+          <ul>
+            <li><a href="mailto:hola@eventoszenit.com">hola@eventoszenit.com</a></li>
+            <li><span>+54 9 11 0000-0000</span></li>
+            <li><a href="https://www.instagram.com/eventos.zenit/" target="_blank" rel="noopener">@eventos.zenit</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© <span id="year"></span> Eventos Zenit. Todos los derechos reservados.</span>
+        <span>Sitio de referencia — contenido e imágenes provisorios.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Lightbox de galería -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Cerrar">✕</button>
+    <img id="lightboxImg" src="" alt="Vista ampliada" />
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
