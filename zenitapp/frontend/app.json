@@ -30,11 +30,18 @@
     "extra": {
       "apiUrl": "http://localhost:8000",
       "wsUrl": "ws://localhost:8000",
-      "siteUrl": "https://zenit-web-7kcw.onrender.com"
+      "siteUrl": "https://zenit-web-7kcw.onrender.com",
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "f5f49f1c-157e-431b-a7d4-129a209510ca"
+      }
     },
     "icon": "./assets/icon.png",
     "web": {
       "favicon": "./assets/icon.png"
-    }
+    },
+    "owner": "scilafeuersturm"
   }
 }

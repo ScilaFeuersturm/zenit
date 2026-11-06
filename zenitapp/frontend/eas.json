@@ -1,0 +1,17 @@
+{
+  "cli": {
+    "appVersionSource": "local"
+  },
+  "build": {
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://zenit-api-7kcw.onrender.com",
+        "EXPO_PUBLIC_SITE_URL": "https://zenit-web-7kcw.onrender.com"
+      }
+    }
+  }
+}
