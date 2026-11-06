@@ -8,8 +8,8 @@
 // de "el admin no se registra, ya tiene credenciales").
 // ============================================================
 const CONFIG = {
-  APP_URL: "http://localhost:19006",
-  API_URL: "http://localhost:8000",
+  APP_URL: window.ZENIT_CONFIG?.APP_URL || "http://localhost:19006",
+  API_URL: window.ZENIT_CONFIG?.API_URL || "http://localhost:8000",
 };
 
 document.getElementById("year").textContent = new Date().getFullYear();

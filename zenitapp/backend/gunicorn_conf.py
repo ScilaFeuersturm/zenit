@@ -1,6 +1,6 @@
-import multiprocessing
+import os
 
-bind = "0.0.0.0:8000"
+bind = f"0.0.0.0:{os.environ.get('PORT', '8000')}"
 worker_class = "uvicorn.workers.UvicornWorker"
 
 # Un solo worker: el ConnectionManager de WebSockets vive en memoria de proceso,

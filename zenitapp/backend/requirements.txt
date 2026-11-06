@@ -13,7 +13,5 @@ python-multipart==0.0.9
 websockets==13.1
 python-dotenv==1.0.1
 
-# Solo necesario si DATABASE_URL apunta a Postgres (ver .env.example).
-# En Windows con Python 3.13 puede no haber wheel prearmado y falla el build
-# si no tenés `pg_config` instalado; con SQLite (el default) no hace falta.
-# psycopg2-binary==2.9.9
+# PostgreSQL en Render; SQLite sigue disponible para desarrollo local.
+psycopg2-binary==2.9.10

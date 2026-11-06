@@ -18,5 +18,6 @@ frontend/*.key
 frontend/*.mobileprovision
 
 # General
+landing/dist/
 .DS_Store
 *.log
