@@ -1,7 +1,9 @@
 import React, { useCallback, useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-import { Stack, useFocusEffect, useLocalSearchParams } from "expo-router";
+import { router, Stack, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { Button } from "@/components/ui/Button";
+import { useAuth } from "@/context/AuthContext";
 import { ScreenContainer } from "@/components/ui/ScreenContainer";
 import { StatusBadge } from "@/components/ui/Badge";
 import { api } from "@/services/api";
@@ -18,6 +20,9 @@ interface EquipmentEntry {
 }
 
 export default function AdminEventDetailScreen() {
+  const { user } = useAuth();
+  const [confirmCancel, setConfirmCancel] = useState(false);
+  const [statusError, setStatusError] = useState("");
   const { id } = useLocalSearchParams<{ id: string }>();
   const [event, setEvent] = useState<ZenitEvent | null>(null);
   const [employees, setEmployees] = useState<User[]>([]);
@@ -49,9 +54,13 @@ export default function AdminEventDetailScreen() {
 
   async function changeStatus(status: EventStatus) {
     setBusy(true);
+    setStatusError("");
     try {
       const updated = await api.patch<ZenitEvent>(`/api/events/${id}/status`, { status });
       setEvent(updated);
+      setConfirmCancel(false);
+    } catch {
+      setStatusError("No se pudo actualizar el estado del evento.");
     } finally {
       setBusy(false);
     }
@@ -122,13 +131,42 @@ export default function AdminEventDetailScreen() {
         </View>
         <Text style={styles.meta}>Cliente: {event.client?.full_name ?? `#${event.client_id}`}</Text>
         <Text style={styles.meta}>{new Date(event.event_date).toLocaleString("es-AR")}</Text>
+        {event.event_type ? <Text style={styles.meta}>Tipo: {event.event_type}</Text> : null}
+        {event.location ? <Text style={styles.meta}>Lugar: {event.location}</Text> : null}
+        {event.guests_count ? <Text style={styles.meta}>Invitados: {event.guests_count}</Text> : null}
+        {event.notes ? <Text style={styles.meta}>Notas: {event.notes}</Text> : null}
 
+        {user?.role === "admin" && (
+          <>
+            <View style={styles.statusRow}>
+              <Button
+                label="Editar evento"
+                variant="outline"
+                disabled={busy}
+                onPress={() => router.push({ pathname: "/(admin)/event/new", params: { editId: id } })}
+              />
+              {event.status !== "cancelado" && !confirmCancel && (
+                <Button label="Cancelar evento" variant="danger" disabled={busy} onPress={() => setConfirmCancel(true)} />
+              )}
+            </View>
+            {confirmCancel && event.status !== "cancelado" && (
+              <>
+                <Text style={styles.meta}>¿Querés cancelar este evento? El historial seguirá disponible.</Text>
+                <View style={styles.statusRow}>
+                  <Button label="Confirmar cancelación" variant="danger" loading={busy} onPress={() => changeStatus("cancelado")} />
+                  <Button label="Volver" variant="outline" disabled={busy} onPress={() => setConfirmCancel(false)} />
+                </View>
+              </>
+            )}
+            {!!statusError && <Text accessibilityRole="alert" style={{ color: colors.danger }}>{statusError}</Text>}
+          </>
+        )}
         <Text style={styles.sectionTitle}>Estado del evento</Text>
         <View style={styles.statusRow}>
-          {STATUS_FLOW.map((status) => (
+          {STATUS_FLOW.filter((status) => status !== "cancelado" || event.status === "cancelado").map((status) => (
             <Pressable
               key={status}
-              disabled={busy}
+              disabled={busy || user?.role !== "admin" || event.status === status}
               onPress={() => changeStatus(status)}
               style={[styles.statusChip, event.status === status && styles.statusChipActive]}
             >

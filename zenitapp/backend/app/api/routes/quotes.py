@@ -1,11 +1,13 @@
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import Response
 from sqlalchemy.orm import Session, joinedload
 
 from app.api.deps import get_current_user, require_admin
 from app.core.database import get_db
 from app.crud.notifications import notify_all_admins, notify_user
+from app.documents.quote_pdf import render_quote_pdf
 from app.models.event import Event, EventService, EventStatus
 from app.models.notification import NotificationType
 from app.models.quote import QuoteItem, QuoteRequest, QuoteRequestStatus
@@ -86,6 +88,35 @@ def list_quote_requests(
     if status_filter:
         query = query.filter(QuoteRequest.status == status_filter)
     return query.order_by(QuoteRequest.created_at.desc()).all()
+
+
+@router.get(
+    "/{quote_id}/pdf",
+    response_class=Response,
+    responses={200: {"content": {"application/pdf": {}}}},
+)
+def export_quote_pdf(
+    quote_id: int,
+    db: Session = Depends(get_db),
+    _: User = Depends(require_admin),
+):
+    quote = (
+        db.query(QuoteRequest)
+        .options(joinedload(QuoteRequest.client), joinedload(QuoteRequest.items).joinedload(QuoteItem.service))
+        .filter(QuoteRequest.id == quote_id)
+        .first()
+    )
+    if not quote:
+        raise HTTPException(status_code=404, detail="Presupuesto no encontrado")
+
+    return Response(
+        content=render_quote_pdf(quote),
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition": f'attachment; filename="presupuesto-zenit-{quote.id:05d}.pdf"',
+            "Cache-Control": "private, no-store",
+        },
+    )
 
 
 @router.patch("/{quote_id}/status", response_model=QuoteRequestOut)

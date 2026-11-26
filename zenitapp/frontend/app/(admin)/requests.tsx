@@ -1,14 +1,20 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { ActivityIndicator, FlatList, StyleSheet, Text, View } from "react-native";
 import { useFocusEffect } from "expo-router";
 import { ScreenContainer } from "@/components/ui/ScreenContainer";
 import { StatusBadge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { api } from "@/services/api";
+import { exportQuotePdf } from "@/services/quotePdf";
+import { useAuth } from "@/context/AuthContext";
 import { colors, radius, spacing, typography } from "@/constants/theme";
 import type { QuoteRequest, QuoteRequestStatus } from "@/types";
 
 export default function RequestsScreen() {
+  const { user } = useAuth();
+  const [exportingId, setExportingId] = useState<number | null>(null);
+  const [exportErrorId, setExportErrorId] = useState<number | null>(null);
+  const exporting = useRef(false);
   const [quotes, setQuotes] = useState<QuoteRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [busyId, setBusyId] = useState<number | null>(null);
@@ -36,6 +42,21 @@ export default function RequestsScreen() {
       setQuotes((prev) => prev.map((q) => (q.id === id ? { ...q, status } : q)));
     } finally {
       setBusyId(null);
+    }
+  }
+
+  async function downloadPdf(id: number) {
+    if (exporting.current) return;
+    exporting.current = true;
+    setExportingId(id);
+    setExportErrorId(null);
+    try {
+      await exportQuotePdf(id);
+    } catch {
+      setExportErrorId(id);
+    } finally {
+      exporting.current = false;
+      setExportingId(null);
     }
   }
 
@@ -71,6 +92,24 @@ export default function RequestsScreen() {
             {item.message ? <Text style={styles.message}>"{item.message}"</Text> : null}
 
             <Text style={styles.total}>Total estimado: ${item.estimated_total.toLocaleString("es-AR")}</Text>
+
+            {user?.role === "admin" && (
+              <>
+                <Button
+                  label="Exportar PDF"
+                  variant="outline"
+                  onPress={() => downloadPdf(item.id)}
+                  loading={exportingId === item.id}
+                  disabled={exportingId !== null || busyId === item.id}
+                  style={styles.exportButton}
+                />
+                {exportErrorId === item.id && (
+                  <Text accessibilityRole="alert" style={styles.exportError}>
+                    No se pudo exportar el presupuesto. Volvé a intentar.
+                  </Text>
+                )}
+              </>
+            )}
 
             {item.status === "pendiente" && (
               <View style={styles.actions}>
@@ -111,6 +150,8 @@ const styles = StyleSheet.create({
   itemLine: { color: colors.textSecondary, fontSize: 13, marginTop: 2 },
   message: { color: colors.textMuted, fontStyle: "italic", fontSize: 13, marginTop: spacing.xs },
   total: { color: colors.accent, fontWeight: "700", marginTop: spacing.sm },
+  exportButton: { marginTop: spacing.md },
+  exportError: { color: colors.danger, marginTop: spacing.xs },
   actions: { flexDirection: "row", gap: spacing.sm, marginTop: spacing.md },
   emptyText: { color: colors.textMuted, fontSize: 13, marginTop: spacing.xl },
 });

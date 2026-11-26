@@ -11,12 +11,15 @@
   "dependencies": {
     "@expo/vector-icons": "14.0.4",
     "@react-native-async-storage/async-storage": "1.23.1",
+    "base64-js": "^1.5.1",
     "expo": "~51.0.28",
     "expo-constants": "~16.0.2",
+    "expo-file-system": "~17.0.1",
     "expo-font": "~12.0.10",
     "expo-linking": "~6.3.1",
     "expo-router": "~3.5.23",
     "expo-secure-store": "~13.0.2",
+    "expo-sharing": "~12.0.1",
     "expo-status-bar": "~1.12.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -28,8 +31,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
-    "typescript": "~5.3.3",
-    "@types/react": "~18.2.79"
+    "@types/react": "~18.2.79",
+    "typescript": "~5.3.3"
   },
   "private": true
 }

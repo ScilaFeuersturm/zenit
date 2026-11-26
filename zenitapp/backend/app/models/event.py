@@ -18,7 +18,7 @@ class EventStatus(str, enum.Enum):
 
 
 class Event(Base):
-    """Un evento contratado. Nace a partir de una QuoteRequest aprobada."""
+    """Un evento contratado, creado directamente o desde un presupuesto aprobado."""
 
     __tablename__ = "events"
 

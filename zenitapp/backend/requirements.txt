@@ -12,6 +12,7 @@ bcrypt==4.0.1
 python-multipart==0.0.9
 websockets==13.1
 python-dotenv==1.0.1
+reportlab==4.2.5
 
 # PostgreSQL en Render; SQLite sigue disponible para desarrollo local.
 psycopg2-binary==2.9.10

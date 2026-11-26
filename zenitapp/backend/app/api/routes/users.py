@@ -6,8 +6,9 @@ from sqlalchemy.orm import Session
 from app.api.deps import require_admin
 from app.core.database import get_db
 from app.core.security import hash_password
+from app.crud.clients import create_client
 from app.models.user import User, UserRole
-from app.schemas.user import UserCreate, UserOut
+from app.schemas.user import ClientCreate, UserCreate, UserOut
 
 router = APIRouter(prefix="/api/users", tags=["Usuarios"])
 
@@ -44,3 +45,10 @@ def create_staff_user(
     db.commit()
     db.refresh(user)
     return user
+
+
+@router.post("/clients", response_model=UserOut, status_code=status.HTTP_201_CREATED)
+def register_client(
+    payload: ClientCreate, db: Session = Depends(get_db), _: User = Depends(require_admin)
+):
+    return create_client(db, payload)
