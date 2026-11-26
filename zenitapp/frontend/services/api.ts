@@ -38,7 +38,7 @@ interface RequestOptions {
   isForm?: boolean;
 }
 
-async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
+async function requestResponse(path: string, options: RequestOptions = {}): Promise<Response> {
   const { method = "GET", body, auth = true, isForm = false } = options;
 
   const headers: Record<string, string> = {};
@@ -79,14 +79,21 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
     throw new ApiError(res.status, detail);
   }
 
+  return res;
+}
+
+async function request<T>(path: string, options?: RequestOptions): Promise<T> {
+  const res = await requestResponse(path, options);
   if (res.status === 204) return undefined as T;
   return res.json() as Promise<T>;
 }
 
 export const api = {
+  getFile: (path: string) => requestResponse(path),
   get: <T>(path: string) => request<T>(path),
   post: <T>(path: string, body?: unknown, opts?: Partial<RequestOptions>) =>
     request<T>(path, { method: "POST", body, ...opts }),
+  put: <T>(path: string, body?: unknown) => request<T>(path, { method: "PUT", body }),
   patch: <T>(path: string, body?: unknown) => request<T>(path, { method: "PATCH", body }),
   delete: <T>(path: string) => request<T>(path, { method: "DELETE" }),
 };

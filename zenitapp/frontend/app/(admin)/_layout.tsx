@@ -68,6 +68,8 @@ export default function AdminLayout() {
             tabBarIcon: ({ color, size }) => <Ionicons name="people" color={color} size={size} />,
           }}
         />
+        <Tabs.Screen name="client-new" options={{ href: null }} />
+        <Tabs.Screen name="event/new" options={{ href: null }} />
         <Tabs.Screen name="event/[id]" options={{ href: null }} />
       </Tabs>
     </View>

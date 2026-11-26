@@ -8,11 +8,10 @@ from app.core.security import (
     create_access_token,
     create_refresh_token,
     decode_token,
-    hash_password,
     verify_password,
 )
-from app.models.chat import Conversation
-from app.models.user import User, UserRole
+from app.crud.clients import create_client
+from app.models.user import User
 from app.schemas.token import RefreshRequest, Token
 from app.schemas.user import UserCreate, UserOut
 
@@ -21,28 +20,7 @@ router = APIRouter(prefix="/api/auth", tags=["Autenticación"])
 
 @router.post("/register", response_model=UserOut, status_code=status.HTTP_201_CREATED)
 def register(payload: UserCreate, db: Session = Depends(get_db)):
-    if db.query(User).filter(User.email == payload.email).first():
-        raise HTTPException(status_code=400, detail="Ese email ya está registrado")
-
-    # El registro público solo puede crear clientes; admin/empleado se crean desde el panel.
-    role = UserRole.CLIENTE
-
-    user = User(
-        email=payload.email,
-        full_name=payload.full_name,
-        phone=payload.phone,
-        hashed_password=hash_password(payload.password),
-        role=role,
-    )
-    db.add(user)
-    db.commit()
-    db.refresh(user)
-
-    # Cada cliente arranca con su hilo de chat ya creado.
-    db.add(Conversation(client_id=user.id))
-    db.commit()
-
-    return user
+    return create_client(db, payload)
 
 
 @router.post("/login", response_model=Token)
