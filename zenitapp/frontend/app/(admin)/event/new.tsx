@@ -3,6 +3,8 @@ import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from
 import { Redirect, router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { ClientForm } from "@/components/ui/ClientForm";
 import { Button } from "@/components/ui/Button";
+import { EventDateTimeField } from "@/components/ui/EventDateTimeField";
+import { combineLocalDateTime, localDateValue, localTimeValue } from "@/components/ui/eventDateTime";
 import { ScreenContainer } from "@/components/ui/ScreenContainer";
 import { TextField } from "@/components/ui/TextField";
 import { colors, radius, spacing, typography } from "@/constants/theme";
@@ -12,28 +14,6 @@ import type { Service, User, ZenitEvent } from "@/types";
 
 const money = new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS" });
 const maxQuantity = 2_147_483_647;
-
-function parseLocalDate(value: string) {
-  const match = /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})$/.exec(value.trim());
-  if (!match) return null;
-  const [, year, month, day, hour, minute] = match;
-  const date = new Date(`${year}-${month}-${day}T${hour}:${minute}:00`);
-  if (
-    Number.isNaN(date.getTime()) ||
-    date.getFullYear() !== Number(year) ||
-    date.getMonth() + 1 !== Number(month) ||
-    date.getDate() !== Number(day) ||
-    date.getHours() !== Number(hour) ||
-    date.getMinutes() !== Number(minute)
-  ) return null;
-  return date;
-}
-
-function formatLocalDate(value: string) {
-  const date = new Date(value);
-  const pad = (part: number) => String(part).padStart(2, "0");
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
-}
 
 export default function NewEventScreen() {
   const { user } = useAuth();
@@ -48,6 +28,7 @@ export default function NewEventScreen() {
   const [clientSearch, setClientSearch] = useState("");
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
   const [eventType, setEventType] = useState("");
   const [location, setLocation] = useState("");
   const [guests, setGuests] = useState("");
@@ -82,7 +63,9 @@ export default function NewEventScreen() {
       setClient(event?.client ?? null);
       setClientSearch("");
       setTitle(event?.title ?? "");
-      setDate(event ? formatLocalDate(event.event_date) : "");
+      const existingDate = event ? new Date(event.event_date) : null;
+      setDate(existingDate ? localDateValue(existingDate) : "");
+      setTime(existingDate ? localTimeValue(existingDate) : "");
       setEventType(event?.event_type ?? "");
       setLocation(event?.location ?? "");
       setGuests(event?.guests_count?.toString() ?? "");
@@ -128,9 +111,9 @@ export default function NewEventScreen() {
       setFeedback("Elegí un cliente e ingresá el nombre del evento.");
       return;
     }
-    const eventDate = parseLocalDate(date);
+    const eventDate = combineLocalDateTime(date, time);
     if (!eventDate) {
-      setFeedback("Ingresá una fecha y hora válidas con el formato AAAA-MM-DD HH:mm.");
+      setFeedback("Elegí una fecha y una hora válidas para el evento.");
       return;
     }
     if (guests && (Number(guests) < 1 || Number(guests) > maxQuantity)) {
@@ -146,11 +129,13 @@ export default function NewEventScreen() {
     setSaving(true);
     setFeedback("");
     try {
+      const originalDate = original ? new Date(original.event_date) : null;
+      const dateUnchanged = originalDate
+        && localDateValue(originalDate) === date
+        && localTimeValue(originalDate) === time;
       const payload = {
         title: title.trim(),
-        event_date: original && formatLocalDate(original.event_date) === date.trim()
-          ? original.event_date
-          : eventDate.toISOString(),
+        event_date: original && dateUnchanged ? original.event_date : eventDate.toISOString(),
         event_type: eventType.trim() || null,
         location: location.trim() || null,
         guests_count: guests ? Number(guests) : null,
@@ -190,7 +175,13 @@ export default function NewEventScreen() {
         ) : (
           <>
             <TextField label="Nombre del evento" value={title} onChangeText={setTitle} maxLength={200} />
-            <TextField label="Fecha y hora local" placeholder="AAAA-MM-DD HH:mm" value={date} onChangeText={setDate} />
+            <EventDateTimeField
+              date={date}
+              time={time}
+              onDateChange={setDate}
+              onTimeChange={setTime}
+              disabled={saving}
+            />
             <TextField label="Tipo de evento (opcional)" value={eventType} onChangeText={setEventType} maxLength={100} />
             <TextField label="Lugar (opcional)" value={location} onChangeText={setLocation} maxLength={300} />
             <TextField label="Invitados (opcional)" keyboardType="number-pad" value={guests} onChangeText={(value) => setGuests(value.replace(/\D/g, ""))} maxLength={10} />
